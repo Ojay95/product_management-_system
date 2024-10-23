@@ -33,6 +33,12 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
+    @GetMapping("/")
+    @ResponseBody
+    public String home() {
+        return "Welcome to Ojaystore!";
+    }
+
     // Retrieve product by name
     @GetMapping("/name")
     public ResponseEntity<Product> getProductByName(@RequestParam String name) {
