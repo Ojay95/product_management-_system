@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  app:
+    image: ojaystore:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ojaystore_app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ojaystore
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - db
+    networks:
+      - ojaystore-network
+
+  db:
+    image: postgres:14
+    container_name: ojaystore_db
+    environment:
+      POSTGRES_DB: ojaystore
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    networks:
+      - ojaystore-network
+
+networks:
+  ojaystore-network:
+    driver: bridge
